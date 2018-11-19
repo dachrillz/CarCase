@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import Employee,Car,Sales
+from .models import Employee,Car,Sales,TotalSales
 
 class EmployeeSerializer(serializers.ModelSerializer):
 
@@ -21,4 +21,12 @@ class SalesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sales
         fields = ('id', 'employee_id', 'carmodel_id', 'date_created', 'date_modified')
+        read_only_fields = ('date_created', 'date_modified')
+
+
+class TotalSalesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TotalSales
+        fields = ('id', 'date_created', 'date_modified', 'data')
         read_only_fields = ('date_created', 'date_modified')
