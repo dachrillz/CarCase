@@ -2,7 +2,7 @@ cd ../
 
 echo "Creating a VirtualEnv"
 echo ""
-virtualenv venv
+virtualenv -p python3 venv
 
 echo "Activating VirtualEnv"
 echo ""
@@ -24,6 +24,12 @@ python manage.py flush #Clear the database on reinstall
 
 
 echo ""
+echo "Applying Migrations"
+echo ""
+python manage.py makemigrations 
+python manage.py migrate 
+
+echo ""
 echo "Writing Data to Database"
 echo ""
 #run the init store script
@@ -33,5 +39,7 @@ cd ../
 
 echo ""
 echo "Starting Django Server"
-python manage.py runserver
+#python manage.py runserver
+systemctl restart gunicorn.service
+
 

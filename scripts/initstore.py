@@ -7,7 +7,8 @@ json_data = open('data.json').read()
 
 json_data = json.loads(json_data)
 
-URL       = 'http://127.0.0.1:8000'
+#URL       = 'http://127.0.0.1:8000'
+URL       = 'http://165.227.169.249'
 URL_EMP   = URL + '/api/employees/'
 URL_CARS  = URL + '/api/carmodels/'
 URL_SALES = URL + '/api/total_sales/'
