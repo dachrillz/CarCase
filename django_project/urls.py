@@ -20,7 +20,7 @@ from django.views import generic
 
 #Swagger
 from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='API SCHEMA')
+schema_view = get_swagger_view(title='schema')
 
 #Authentication
 from rest_framework_simplejwt.views import (

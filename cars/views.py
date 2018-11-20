@@ -7,7 +7,7 @@ from rest_framework import status
 from user.models import User
 from user.serializers import UserSerializer
 
-from .models import Car, Sales
+from .models import Car, Sales, TotalSales
 from .serializers import CarSerializer, SalesSerializer, TotalSalesSerializer
 
 #################################################################################################
@@ -16,13 +16,9 @@ from .serializers import CarSerializer, SalesSerializer, TotalSalesSerializer
 #
 #################################################################################################
 
-class CreateEmployeeView(generics.ListCreateAPIView):
+class CreateEmployeeView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
-    def perform_create(self, serializer):
-        serializer.save()
 
 class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -60,6 +56,15 @@ class CreateSalesView(generics.ListCreateAPIView):
         serializer.save()
 
 
+class SalesViewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Sales.objects.all()
+    serializer_class = SalesSerializer
+
+
+class TotalSalesView(generics.ListAPIView):
+    queryset = TotalSales.objects.all()
+    serializer_class = TotalSalesSerializer
+
     def get(self, *arg, **kwargs):
 
         to_be_serialized = {}
@@ -75,7 +80,7 @@ class CreateSalesView(generics.ListCreateAPIView):
 
             car_price = Car.objects.get(id=int(item.carmodel_id)).price
 
-            if emp_name not in to_be_serialized:
+            if personid not in to_be_serialized:
                 to_be_serialized[personid] = [int(car_price),emp_name]
             else:
                 to_be_serialized[personid][0] += int(car_price)
@@ -86,5 +91,3 @@ class CreateSalesView(generics.ListCreateAPIView):
             serializer_instance.save()
             status_code=201
         return Response(serializer_instance.data, status=status_code)
-
-
