@@ -16,10 +16,34 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from django.views import generic
+
+#Swagger
+from rest_framework_swagger.views import get_swagger_view
+schema_view = get_swagger_view(title='API SCHEMA')
+
+#Authentication
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
+    url(r'^api/$', generic.RedirectView.as_view(url='/docs/', permanent=False)), #Redirect to documentation
+    url(r'^docs/$', schema_view),
+
+    #Apps
     url(r'^api/', include('cars.urls')),
+
+    #Authentication
+    url(r'^$', generic.RedirectView.as_view(url='auth/login/?next=/api/', permanent=False)), #Redirect to login screen
+    url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^auth/token/obtain/$', TokenObtainPairView.as_view()),
+    url(r'^auth/token/refresh/$', TokenRefreshView.as_view()),
+
+    #Get profile view when logged in as user
+    url(r'^profile/', include('user.urls')),
 
 ]

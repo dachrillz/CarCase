@@ -4,18 +4,36 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
 
-from .models import Employee, Car, Sales
-from .serializers import EmployeeSerializer, CarSerializer, SalesSerializer, TotalSalesSerializer
-# Create your views here.
-#EmployeeList, CarModelList, TotalSales
+from user.models import User
+from user.serializers import UserSerializer
 
+from .models import Car, Sales
+from .serializers import CarSerializer, SalesSerializer, TotalSalesSerializer
+
+#################################################################################################
+#
+# Employees
+#
+#################################################################################################
 
 class CreateEmployeeView(generics.ListCreateAPIView):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
     def perform_create(self, serializer):
         serializer.save()
+
+class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+#################################################################################################
+#
+# Cars
+#
+#################################################################################################
 
 class CreateCarView(generics.ListCreateAPIView):
     queryset = Car.objects.all()
@@ -23,6 +41,16 @@ class CreateCarView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+
+#################################################################################################
+#
+# Sales
+#
+#################################################################################################
 
 class CreateSalesView(generics.ListCreateAPIView):
     queryset = Sales.objects.all()
@@ -43,7 +71,7 @@ class CreateSalesView(generics.ListCreateAPIView):
 
             personid = item.employee_id
 
-            emp_name = Employee.objects.get(id=int(personid)).name
+            emp_name = User.objects.get(id=int(personid)).name
 
             car_price = Car.objects.get(id=int(item.carmodel_id)).price
 

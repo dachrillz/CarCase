@@ -11,10 +11,18 @@ URL       = 'http://127.0.0.1:8000'
 URL_EMP   = URL + '/api/employees/'
 URL_CARS  = URL + '/api/carmodels/'
 URL_SALES = URL + '/api/total_sales/'
+URL_LOGIN = URL + '/auth/login/?next=/api/'
 
 headers = {
     "content-type": "application/json"
 }
+
+#Authenticate this session
+username = input("Please Enter Username of SuperUser: ")
+password = input("Please Enter Password of SuperUser: ")
+r = requests.post(url = URL_LOGIN, auth = (username, password))
+
+print(r)
 
 #Employees
 emp = json_data['carshop']['employees']
